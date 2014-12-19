@@ -6,7 +6,7 @@ powerspy.scala is an open-source project developed by the [Spirals research grou
 
 # How to use it?
 powerspy.scala is fully managed by sbt.
-Use examples are provided in the project's wiki.
+More details are available in the project's Wiki.
 
 # Contributing
 If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request.
