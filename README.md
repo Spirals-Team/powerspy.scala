@@ -1,4 +1,6 @@
 # powerspy.scala
+[![Circle CI](https://circleci.com/gh/Spirals-Team/powerspy.scala/tree/master.svg?style=svg)](https://circleci.com/gh/Spirals-Team/powerspy.scala/tree/master)
+
 powerspy.scala is a tool for getting the power consumption from the PowerSpy powermeter.
 
 # About
