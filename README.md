@@ -4,14 +4,19 @@ powerspy.scala is a tool for getting the power consumption from the PowerSpy pow
 # About
 powerspy.scala is an open-source project developed by the [Spirals research group](https://team.inria.fr/spirals) (University of Lille 1 and Inria).
 
+# How to use it?
+powerspy.scala is fully managed by sbt.
+Use examples are provided in the project's wiki.
+
 # Contributing
 If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request.
 
 When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible.
 
 # Acknowledgments
-We all stand on the shoulders of giants and get by with a little help from our friends. powerspy.scala is written in [Scala](http://www.scala-lang.org) (version 2.11.4 under [3-clause BSD license](http://www.scala-lang.org/license.html)).
-It is fully managed by sbt.
+We all stand on the shoulders of giants and get by with a little help from our friends.
+powerspy.scala is written in [Scala](http://www.scala-lang.org) (version 2.11.4 under [3-clause BSD license](http://www.scala-lang.org/license.html)) and built on top of:
+* [Apache log4j2](http://logging.apache.org/log4j/2.x/) (version 2.1 under [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0)), for logging.
 
 # Licence
 This software is licensed under the *GNU Affero General Public License*, quoted below.
