@@ -457,27 +457,27 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
 }
 
 /**
- * Object companion.
+ * Companion object.
  *
  * @author Maxime Colmant <maxime.colmant@gmail.com>
  */
 object PowerSpy {
   import org.apache.logging.log4j.LogManager
-
-import scala.concurrent.duration.DurationInt
+  import scala.concurrent.duration.DurationInt
 
   private val log = LogManager.getLogger
-  private var pSpyOption: Option[PowerSpy] = None
 
-  def apply(address: String, timeout: FiniteDuration = 3.seconds): Option[PowerSpy] = {
-    val connexion = new PowerSpyConnexion(address)
+  private var connexionWrapper: Option[PowerSpyConnexion] = None
+  private var powerspy: Option[PowerSpy] = None
 
-    if(pSpyOption == None) {
+  def init(address: String, timeout: FiniteDuration = 3.seconds): Option[PowerSpy] = {
+    if(connexionWrapper == None && powerspy == None) {
+      val connexion = new PowerSpyConnexion(address)
       val pSpy = new PowerSpy(connexion, timeout)
 
       if (pSpy.identity() == None) {
         log.error("Cannot identify the device")
-        connexion.close()
+        deinit()
       }
 
       else {
@@ -502,12 +502,43 @@ import scala.concurrent.duration.DurationInt
 
         log.debug("uscaleFactory: {}, iscaleFactory: {}, pscaleFactory: {}", uScaleFactory.toString, iScaleFactory.toString, pScaleFactory.toString)
         log.debug("uscaleCurrent: {}, iscaleCurrent: {}, pscaleCurrent: {}", uScaleCurrent.toString, iScaleCurrent.toString, pScaleCurrent.toString)
-        pSpyOption = Some(pSpy)
+
+        connexionWrapper = Some(connexion)
+        powerspy = Some(pSpy)
       }
     }
 
     else log.debug("PowerSpy already connected")
 
-    pSpyOption
+    powerspy
+  }
+
+  def deinit(): Unit = {
+    import com.intel.bluetooth.BlueCoveImpl
+
+    connexionWrapper match {
+      case Some(connexion) => {
+        connexion.input match {
+          case Some(in) => in.close()
+          case _ => log.error("reader not initialized")
+        }
+
+        connexion.output match {
+          case Some(out) => out.close()
+          case _ => log.error("writer not initialized")
+        }
+
+        connexion.connexion match {
+          case Some(internalCon) => internalCon.close()
+          case _ => log.error("internal connexion not initialized")
+        }
+      }
+
+      case _ => log.error("connexion not initialized")
+    }
+
+    connexionWrapper = None
+    powerspy = None
+    BlueCoveImpl.shutdown()
   }
 }

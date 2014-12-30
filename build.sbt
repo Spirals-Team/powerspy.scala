@@ -2,7 +2,7 @@ organization := "fr.inria.powerspy"
 
 name := "powerspy.scala"
 
-version := "1.0.0"
+version := "1.0.1"
 
 scalaVersion := "2.11.4"
 
@@ -38,18 +38,20 @@ scalacOptions ++= Seq(
 
 parallelExecution in Test := false
 
-val downloadBluecoveLib = TaskKey[File]("Downloads the bluecove runtime dependencies")
-val downloadBluecoveGplLib = TaskKey[File]("Downloads the bluecove-gpl runtime dependencies")
+// For using the app in the console mode with sbt, be sure that the lib folder was created.
+// Otherwise, use sbt download-bluecove and sbt download-bluecove-gpl before running the application.
+val downloadBluecoveLib = TaskKey[File]("download-bluecove")
+val downloadBluecoveGplLib = TaskKey[File]("download-bluecove-gpl")
 
 downloadBluecoveLib := {
-  val location = target.value / "bluecove" / "bluecove-2.1.0.jar"
+  val location = baseDirectory.value / "lib" / "bluecove-2.1.0.jar"
   location.getParentFile.mkdirs()
   IO.download(url("https://bluecove.googlecode.com/files/bluecove-2.1.0.jar"), location)
   location
 }
 
 downloadBluecoveGplLib := {
-  val location = target.value / "bluecove" / "bluecove-gpl-2.1.0.jar"
+  val location = baseDirectory.value / "lib" / "bluecove-gpl-2.1.0.jar"
   location.getParentFile.mkdirs()
   IO.download(url("https://bluecove.googlecode.com/files/bluecove-gpl-2.1.0.jar"), location)
   location
@@ -68,12 +70,10 @@ mappings in Universal ++= {
 
 mappings in Universal ++= {
   Seq(
-    downloadBluecoveLib.value -> "bluecove/bluecove-2.1.0.jar",
-    downloadBluecoveGplLib.value -> "bluecove/bluecove-gpl-2.1.0.jar"
+    downloadBluecoveLib.value -> "lib/bluecove-2.1.0.jar",
+    downloadBluecoveGplLib.value -> "lib/bluecove-gpl-2.1.0.jar"
   )
 }
-
-bashScriptExtraDefines += """addJava "-Djava.ext.dirs=${app_home}/../bluecove/""""
 
 startYear := Some(2014)
 
