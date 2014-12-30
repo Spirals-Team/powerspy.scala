@@ -125,7 +125,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
           Await.result(future, timeout)
         }
         catch {
-          case ex: TimeoutException => log.error("no message received"); None
+          case _: TimeoutException => log.error("no message received"); None
           case ex: Throwable => log.error("{}", ex); None
         }
       }
@@ -463,7 +463,8 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
  */
 object PowerSpy {
   import org.apache.logging.log4j.LogManager
-  import scala.concurrent.duration.DurationInt
+  import scala.concurrent.{Await, Future, TimeoutException}
+  import scala.concurrent.duration.DurationDouble
 
   private val log = LogManager.getLogger
 
@@ -474,18 +475,17 @@ object PowerSpy {
     if(connexionWrapper == None && powerspy == None) {
       val connexion = new PowerSpyConnexion(address)
       val pSpy = new PowerSpy(connexion, timeout)
+      val identity = pSpy.identity()
 
-      if (pSpy.identity() == None) {
+      if(identity == None) {
         log.error("Cannot identify the device")
         deinit()
       }
 
       else {
-        val identity = pSpy.identity().get
-
         // PowerSpy is busy, force to abort the connexion
-        if (identity.status != "R" && identity.status != "C") {
-          log.warn("PowerSpy is in status {}, try to abort the connexion", identity.status)
+        if (identity.get.status != "R" && identity.get.status != "C") {
+          log.warn("PowerSpy is in status {}, try to abort the connexion", identity.get.status)
           pSpy.stopRealTime()
           pSpy.stop()
         }
@@ -513,32 +513,57 @@ object PowerSpy {
     powerspy
   }
 
-  def deinit(): Unit = {
-    import com.intel.bluetooth.BlueCoveImpl
+  def deinit(timeout: FiniteDuration = 1.seconds): Unit = {
+    import scala.concurrent.ExecutionContext.Implicits.global
 
     connexionWrapper match {
       case Some(connexion) => {
-        connexion.input match {
-          case Some(in) => in.close()
-          case _ => log.error("reader not initialized")
+        val closeInput = Future {
+          connexion.input match {
+            case Some(in) => in.close()
+            case _ => log.error("reader not initialized")
+          }
         }
 
-        connexion.output match {
-          case Some(out) => out.close()
-          case _ => log.error("writer not initialized")
+        val closeOutput = Future {
+          connexion.output match {
+            case Some(out) => out.close()
+            case _ => log.error("writer not initialized")
+          }
         }
 
-        connexion.connexion match {
-          case Some(internalCon) => internalCon.close()
-          case _ => log.error("internal connexion not initialized")
+        val closeInternalConnexion = Future {
+          connexion.connexion match {
+            case Some(internalCon) => internalCon.close()
+            case _ => log.error("internal connexion not initialized")
+          }
+        }
+
+        try {
+          Await.result(closeInput, timeout)
+        }
+        catch {
+          case _: TimeoutException => log.debug("input already closed")
+        }
+
+        try {
+          Await.result(closeOutput, timeout)
+        }
+        catch {
+          case _: TimeoutException => log.debug("output already closed")
+        }
+
+        try {
+          Await.result(closeInternalConnexion, timeout)
+        }
+        catch {
+          case _: TimeoutException => log.debug("internal connexion already closed")
         }
       }
-
       case _ => log.error("connexion not initialized")
     }
 
     connexionWrapper = None
     powerspy = None
-    BlueCoveImpl.shutdown()
   }
 }
