@@ -23,3 +23,6 @@ out
 *.ipr
 *.iws
 *.iml
+
+# bluecove
+lib/bluecove*

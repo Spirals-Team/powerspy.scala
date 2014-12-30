@@ -32,8 +32,6 @@ trait Connexion {
 
   def input: Option[Reader]
   def output: Option[Writer]
-
-  def close(): Unit
 }
 
 /**
@@ -50,7 +48,7 @@ class PowerSpyConnexion(address: String) extends Connexion {
 
   private val log = LogManager.getLogger
 
-  private var connexion: Option[StreamConnection] = {
+  val connexion: Option[StreamConnection] = {
     try {
       Some(Connector.open(s"btspp://${address.replace(":", "").replace("-", "")}:1;authenticate=false;encrypt=false;master=false").asInstanceOf[StreamConnection])
     }
@@ -84,16 +82,6 @@ class PowerSpyConnexion(address: String) extends Connexion {
         }
       }
       case _ => None
-    }
-  }
-
-  def close(): Unit = {
-    connexion match {
-      case Some(con) => {
-        con.close()
-        connexion = None
-      }
-      case _ => log.error("the connexion with PowerSpy is not established")
     }
   }
 }

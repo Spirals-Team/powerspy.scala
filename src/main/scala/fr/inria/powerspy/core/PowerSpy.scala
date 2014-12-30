@@ -125,7 +125,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
           Await.result(future, timeout)
         }
         catch {
-          case ex: TimeoutException => log.error("no message received"); None
+          case _: TimeoutException => log.error("no message received"); None
           case ex: Throwable => log.error("{}", ex); None
         }
       }
@@ -457,35 +457,35 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
 }
 
 /**
- * Object companion.
+ * Companion object.
  *
  * @author Maxime Colmant <maxime.colmant@gmail.com>
  */
 object PowerSpy {
   import org.apache.logging.log4j.LogManager
-
-import scala.concurrent.duration.DurationInt
+  import scala.concurrent.{Await, Future, TimeoutException}
+  import scala.concurrent.duration.DurationDouble
 
   private val log = LogManager.getLogger
-  private var pSpyOption: Option[PowerSpy] = None
 
-  def apply(address: String, timeout: FiniteDuration = 3.seconds): Option[PowerSpy] = {
-    val connexion = new PowerSpyConnexion(address)
+  private var connexionWrapper: Option[PowerSpyConnexion] = None
+  private var powerspy: Option[PowerSpy] = None
 
-    if(pSpyOption == None) {
+  def init(address: String, timeout: FiniteDuration = 3.seconds): Option[PowerSpy] = {
+    if(connexionWrapper == None && powerspy == None) {
+      val connexion = new PowerSpyConnexion(address)
       val pSpy = new PowerSpy(connexion, timeout)
+      val identity = pSpy.identity()
 
-      if (pSpy.identity() == None) {
+      if(identity == None) {
         log.error("Cannot identify the device")
-        connexion.close()
+        deinit()
       }
 
       else {
-        val identity = pSpy.identity().get
-
         // PowerSpy is busy, force to abort the connexion
-        if (identity.status != "R" && identity.status != "C") {
-          log.warn("PowerSpy is in status {}, try to abort the connexion", identity.status)
+        if (identity.get.status != "R" && identity.get.status != "C") {
+          log.warn("PowerSpy is in status {}, try to abort the connexion", identity.get.status)
           pSpy.stopRealTime()
           pSpy.stop()
         }
@@ -502,12 +502,68 @@ import scala.concurrent.duration.DurationInt
 
         log.debug("uscaleFactory: {}, iscaleFactory: {}, pscaleFactory: {}", uScaleFactory.toString, iScaleFactory.toString, pScaleFactory.toString)
         log.debug("uscaleCurrent: {}, iscaleCurrent: {}, pscaleCurrent: {}", uScaleCurrent.toString, iScaleCurrent.toString, pScaleCurrent.toString)
-        pSpyOption = Some(pSpy)
+
+        connexionWrapper = Some(connexion)
+        powerspy = Some(pSpy)
       }
     }
 
     else log.debug("PowerSpy already connected")
 
-    pSpyOption
+    powerspy
+  }
+
+  def deinit(timeout: FiniteDuration = 1.seconds): Unit = {
+    import scala.concurrent.ExecutionContext.Implicits.global
+
+    connexionWrapper match {
+      case Some(connexion) => {
+        val closeInput = Future {
+          connexion.input match {
+            case Some(in) => in.close()
+            case _ => log.error("reader not initialized")
+          }
+        }
+
+        val closeOutput = Future {
+          connexion.output match {
+            case Some(out) => out.close()
+            case _ => log.error("writer not initialized")
+          }
+        }
+
+        val closeInternalConnexion = Future {
+          connexion.connexion match {
+            case Some(internalCon) => internalCon.close()
+            case _ => log.error("internal connexion not initialized")
+          }
+        }
+
+        try {
+          Await.result(closeInput, timeout)
+        }
+        catch {
+          case _: TimeoutException => log.debug("input already closed")
+        }
+
+        try {
+          Await.result(closeOutput, timeout)
+        }
+        catch {
+          case _: TimeoutException => log.debug("output already closed")
+        }
+
+        try {
+          Await.result(closeInternalConnexion, timeout)
+        }
+        catch {
+          case _: TimeoutException => log.debug("internal connexion already closed")
+        }
+      }
+      case _ => log.error("connexion not initialized")
+    }
+
+    connexionWrapper = None
+    powerspy = None
   }
 }

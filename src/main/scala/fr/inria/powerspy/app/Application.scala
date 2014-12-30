@@ -59,30 +59,30 @@ object Application extends App {
   import scala.concurrent.duration.DurationDouble
 
   @volatile var running = true
-  @volatile var pSpyOption: Option[PowerSpy] = None
+  @volatile var powerspy: Option[PowerSpy] = None
 
   val shutdownHookThread = scala.sys.ShutdownHookThread {
     println("It's the time for sleeping! ...")
 
-    pSpyOption match {
+    powerspy match {
       case Some(pSpy) => {
         pSpy.stopRealTime()
         pSpy.stop()
-        pSpy.connexion.close()
+        PowerSpy.deinit()
       }
       case _ => {}
     }
 
     running = false
-    pSpyOption = None
+    powerspy = None
   }
 
   private val log = LogManager.getLogger
 
   val configuration = new Configuration(args)
-  pSpyOption = PowerSpy(configuration.mac(), configuration.expiration().seconds)
+  powerspy = PowerSpy.init(configuration.mac(), configuration.expiration().seconds)
 
-  pSpyOption match {
+  powerspy match {
     case Some(pSpy) => {
       pSpy.start()
       while(!pSpy.startRealTime(1.seconds)) Thread.sleep(1.seconds.toMillis)
