@@ -1,5 +1,5 @@
 # powerspy.scala
-[![Circle CI](https://circleci.com/gh/Spirals-Team/powerspy.scala/tree/master.svg?style=svg)](https://circleci.com/gh/Spirals-Team/powerspy.scala/tree/master)
+[![Build Status](https://travis-ci.org/Spirals-Team/powerspy.scala.svg?branch=master)](https://travis-ci.org/Spirals-Team/powerspy.scala)
 
 powerspy.scala is a tool for getting the power consumption from the PowerSpy power meter.
 
