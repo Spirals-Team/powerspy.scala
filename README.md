@@ -1,7 +1,8 @@
 # powerspy.scala
 [![Build Status](https://travis-ci.org/Spirals-Team/powerspy.scala.svg?branch=master)](https://travis-ci.org/Spirals-Team/powerspy.scala)
+[![Codacy Badge](https://www.codacy.com/project/badge/069668d33e0a49b68001d57b62d536a1)](https://www.codacy.com/public/maximecolmant/powerspy.scala)
 
-powerspy.scala is a tool for getting the power consumption from the PowerSpy power meter.
+powerspy.scala is a tool for getting the power consumption from the [PowerSpy](http://www.alciom.com/en/products/powerspy2-en-gb-2.html) power meter.
 
 # About
 powerspy.scala is an open-source project developed by the [Spirals research group](https://team.inria.fr/spirals) (University of Lille 1 and Inria).
@@ -30,4 +31,4 @@ powerspy.scala is free software: you can redistribute it and/or modify it under 
 
 powerspy.scala is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU Affero General Public License along with PowerAPI. If not, please consult http://www.gnu.org/licenses/agpl-3.0.html.
+You should have received a copy of the GNU Affero General Public License along with powerspy.scala. If not, please consult http://www.gnu.org/licenses/agpl-3.0.html.
