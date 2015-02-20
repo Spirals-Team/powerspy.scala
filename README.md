@@ -1,5 +1,5 @@
 # powerspy.scala
-[![Build Status](https://travis-ci.org/Spirals-Team/powerspy.scala.svg?branch=master)](https://travis-ci.org/Spirals-Team/powerspy.scala)
+[![Build Status](https://travis-ci.org/Spirals-Team/powerspy.scala.svg)](https://travis-ci.org/Spirals-Team/powerspy.scala)
 [![Codacy Badge](https://www.codacy.com/project/badge/069668d33e0a49b68001d57b62d536a1)](https://www.codacy.com/public/maximecolmant/powerspy.scala)
 
 powerspy.scala is a tool for getting the power consumption from the [PowerSpy](http://www.alciom.com/en/products/powerspy2-en-gb-2.html) power meter.

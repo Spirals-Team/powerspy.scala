@@ -25,4 +25,7 @@ out
 *.iml
 
 # bluecove
-lib/bluecove*
+*/lib/bluecove*
+
+# Tokens
+secrets.tar

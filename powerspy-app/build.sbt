@@ -11,21 +11,26 @@ libraryDependencies ++= Seq(
   "org.rogach" %% "scallop" % "0.9.5"
 )
 
-// For using the application, be sure that the lib folder was created.
-// Otherwise, use sbt download-bluecove before running the application.
-val downloadBluecoveLibs = TaskKey[Seq[File]]("download-bluecove")
+lazy val downloadBluecoveApp = taskKey[File]("download-bluecove-app")
+lazy val downloadBluecoveGplApp = taskKey[File]("download-bluecove-gpl-app")
 
-downloadBluecoveLibs := {
+downloadBluecoveApp := {
   val locationBluecove = baseDirectory.value / "lib" / "bluecove-2.1.0.jar"
-  val locationBluecoveGpl = baseDirectory.value / "lib" / "bluecove-gpl-2.1.0.jar"
-  locationBluecove.getParentFile.mkdirs()
-  locationBluecoveGpl.getParentFile.mkdirs()
-  IO.download(url("https://bluecove.googlecode.com/files/bluecove-2.1.0.jar"), locationBluecove)
-  IO.download(url("https://bluecove.googlecode.com/files/bluecove-gpl-2.1.0.jar"), locationBluecoveGpl)
-  Seq(locationBluecove, locationBluecoveGpl)
+  if(!locationBluecove.getParentFile.exists()) locationBluecove.getParentFile.mkdirs()
+  if(!locationBluecove.exists()) IO.download(url("https://bluecove.googlecode.com/files/bluecove-2.1.0.jar"), locationBluecove)
+  locationBluecove
 }
 
-name in Universal := "powerspy-app"
+downloadBluecoveGplApp := {
+  val locationBluecoveGpl = baseDirectory.value / "lib" / "bluecove-gpl-2.1.0.jar"
+  if(!locationBluecoveGpl.getParentFile.exists()) locationBluecoveGpl.getParentFile.mkdirs()
+  if(!locationBluecoveGpl.exists()) IO.download(url("https://bluecove.googlecode.com/files/bluecove-gpl-2.1.0.jar"), locationBluecoveGpl)
+  locationBluecoveGpl
+}
+
+mappings in Universal += downloadBluecoveApp.value -> s"lib/${downloadBluecoveApp.value.name}"
+
+mappings in Universal += downloadBluecoveGplApp.value -> s"lib/${downloadBluecoveGplApp.value.name}"
 
 mappings in Universal ++= {
   ((file("../") * "README*").get map {

@@ -13,3 +13,5 @@ scalacOptions in ThisBuild ++= Seq(
 )
 
 parallelExecution in (ThisBuild, Test) := false
+
+codacyProjectTokenFile := Some("./codacy-token.txt")
