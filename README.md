@@ -1,4 +1,6 @@
 # powerspy.scala
+
+[![Join the chat at https://gitter.im/Spirals-Team/powerspy.scala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Spirals-Team/powerspy.scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/Spirals-Team/powerspy.scala.svg)](https://travis-ci.org/Spirals-Team/powerspy.scala)
 [![Codacy Badge](https://www.codacy.com/project/badge/069668d33e0a49b68001d57b62d536a1)](https://www.codacy.com/public/maximecolmant/powerspy.scala)
 
