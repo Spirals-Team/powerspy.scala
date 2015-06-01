@@ -84,10 +84,10 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
           true
         }
         catch {
-          case ex: Throwable => log.error("{}", ex); false
+          case ex: Throwable => log.warn("{}", ex); false
         }
       }
-      case _ => log.error("connexion with PowerSpy is not established"); false
+      case _ => log.warn("connexion with PowerSpy is not established"); false
     }
   }
 
@@ -125,11 +125,11 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
           Await.result(future, timeout)
         }
         catch {
-          case _: TimeoutException => log.error("no message received"); None
-          case ex: Throwable => log.error("{}", ex); None
+          case _: TimeoutException => log.warn("no message received"); None
+          case ex: Throwable => log.warn("{}", ex); None
         }
       }
-      case _ => log.error("connexion with PowerSpy is not established"); None
+      case _ => log.warn("connexion with PowerSpy is not established"); None
     }
   }
 
@@ -146,7 +146,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
         case Content(status, pllLocked, triggerStatus, swVersion, hwVersion, hwSerial) => {
           pSpyIdentity = Some(PSpyIdentity(status, pllLocked, triggerStatus, swVersion, hwVersion, hwSerial))
         }
-        case _ => log.error("the identity's message received is wrong"); pSpyIdentity = None
+        case _ => log.warn("the identity's message received is wrong"); pSpyIdentity = None
       }
     }
 
@@ -227,7 +227,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
       pSpyPScaleFactory
     }
     else {
-      log.error("the uscale/iscale factories are not retrieved")
+      log.warn("the uscale/iscale factories are not retrieved")
       None
     }
   }
@@ -244,7 +244,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
       pSpyPScaleCurrent
     }
     else {
-      log.error("the uscale/iscale currents are not retrieved")
+      log.warn("the uscale/iscale currents are not retrieved")
       None
     }
   }
@@ -276,7 +276,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
       }
 
       else {
-        log.error("the PowerSpy's informations are not retrieved")
+        log.warn("the PowerSpy's informations are not retrieved")
         pSpyFrequency = None
       }
     }
@@ -303,12 +303,12 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
 
         receive() match {
           case Some(ack) if ack == Command.OK.name => true
-          case _ => log.error("command START failed"); false
+          case _ => log.warn("command START failed"); false
         }
       }
     }
     else {
-      log.error("the PowerSpy's informations are not retrieved")
+      log.warn("the PowerSpy's informations are not retrieved")
       false
     }
   }
@@ -365,11 +365,11 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
       receive() match {
         case Some(ack) if ack == Command.OK.name => true
         case Some(data) => log.warn("data flushed from the input stream: {}", data); true
-        case _ => log.error("command {} failed", command.name); false
+        case _ => log.warn("command {} failed", command.name); false
       }
     }
     else {
-      log.error("the PowerSpy's informations are not retrieved")
+      log.warn("the PowerSpy's informations are not retrieved")
       false
     }
   }
@@ -408,15 +408,15 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
             Some(PSpyRTValues(System.currentTimeMillis(), voltage, current, power, pVoltage, pCurrent))
           }
           else {
-            log.error("the answer received is invalid.")
+            log.warn("the answer received is invalid.")
             None
           }
         }
-        case _ => log.error("the format of the received message is wrong"); None
+        case _ => log.warn("the format of the received message is wrong"); None
       }
     }
     else {
-      log.error("the PowerSpy's informations are not retrieved")
+      log.warn("the PowerSpy's informations are not retrieved")
       None
     }
   }
@@ -451,7 +451,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
       status
     }
     catch {
-      case ex: TimeoutException => log.error("command RT_STOP failed"); false
+      case ex: TimeoutException => log.warn("command RT_STOP failed"); false
     }
   }
 }
@@ -478,7 +478,7 @@ object PowerSpy {
       val identity = pSpy.identity()
 
       if(identity == None) {
-        log.error("Cannot identify the device")
+        log.warn("Cannot identify the device")
         deinit()
       }
 
@@ -521,21 +521,21 @@ object PowerSpy {
         val closeInput = Future {
           connexion.input match {
             case Some(in) => in.close()
-            case _ => log.error("reader not initialized")
+            case _ => log.warn("reader not initialized")
           }
         }
 
         val closeOutput = Future {
           connexion.output match {
             case Some(out) => out.close()
-            case _ => log.error("writer not initialized")
+            case _ => log.warn("writer not initialized")
           }
         }
 
         val closeInternalConnexion = Future {
           connexion.connexion match {
             case Some(internalCon) => internalCon.close()
-            case _ => log.error("internal connexion not initialized")
+            case _ => log.warn("internal connexion not initialized")
           }
         }
 
@@ -560,7 +560,7 @@ object PowerSpy {
           case _: TimeoutException => log.debug("internal connexion already closed")
         }
       }
-      case _ => log.error("connexion not initialized")
+      case _ => log.warn("connexion not initialized")
     }
 
     connexionWrapper = None

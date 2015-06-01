@@ -53,7 +53,7 @@ class PowerSpyConnexion(address: String) extends Connexion {
       Some(Connector.open(s"btspp://${address.replace(":", "").replace("-", "")}:1;authenticate=false;encrypt=false;master=false").asInstanceOf[StreamConnection])
     }
     catch {
-      case ex: Throwable => log.error("{}", ex.getMessage); None
+      case ex: Throwable => log.warn("{}", ex.getMessage); None
     }
   }
 
@@ -64,7 +64,7 @@ class PowerSpyConnexion(address: String) extends Connexion {
           Some(new BufferedReader(new InputStreamReader(con.openDataInputStream())))
         }
         catch {
-          case ex: Throwable => log.error("{}", ex.getMessage); None
+          case ex: Throwable => log.warn("{}", ex.getMessage); None
         }
       }
       case _ => None
@@ -78,7 +78,7 @@ class PowerSpyConnexion(address: String) extends Connexion {
           Some(new PrintWriter(con.openOutputStream()))
         }
         catch {
-          case ex: Throwable => log.error("{}", ex.getMessage); None
+          case ex: Throwable => log.warn("{}", ex.getMessage); None
         }
       }
       case _ => None
