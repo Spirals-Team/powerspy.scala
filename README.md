@@ -1,6 +1,11 @@
 # powerspy.scala
+
+[![Join the chat at https://gitter.im/Spirals-Team/powerspy.scala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Spirals-Team/powerspy.scala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![OSS Licence](http://img.shields.io/badge/license-AGPLv3-532553.svg)](https://www.gnu.org/licenses/agpl-3.0.html)
 [![Build Status](https://travis-ci.org/Spirals-Team/powerspy.scala.svg)](https://travis-ci.org/Spirals-Team/powerspy.scala)
-[![Codacy Badge](https://www.codacy.com/project/badge/069668d33e0a49b68001d57b62d536a1)](https://www.codacy.com/public/maximecolmant/powerspy.scala)
+[![Coverage Status](https://coveralls.io/repos/Spirals-Team/powerspy.scala/badge.svg)](https://coveralls.io/r/Spirals-Team/powerspy.scala)
+[![Codacy Badge](https://www.codacy.com/project/badge/834b8a2fdbff4c5688bb1273c4951dd8)](https://www.codacy.com/app/mcolmant/powerspy-scala)
 
 powerspy.scala is a tool for getting the power consumption from the [PowerSpy](http://www.alciom.com/en/products/powerspy2-en-gb-2.html) power meter.
 
@@ -20,12 +25,11 @@ When submitting code, please make every effort to follow existing conventions an
 We all stand on the shoulders of giants and get by with a little help from our friends.
 powerspy.scala is written in [Scala](http://www.scala-lang.org) (version 2.11.4 under [3-clause BSD license](http://www.scala-lang.org/license.html)) and built on top of:
 * [Apache log4j2](http://logging.apache.org/log4j/2.x/) (version 2.1 under [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0)), for logging.
-* [Scallop](https://github.com/scallop/scallop) (version 0.9.5 under [MIT License](https://github.com/scallop/scallop/blob/develop/license.txt)), for parsing command lines.
 
 # Licence
 This software is licensed under the *GNU Affero General Public License*, quoted below.
 
-Copyright (C) 2011-2014 Inria, University of Lille 1.
+Copyright (C) 2011-2015 Inria, University of Lille 1.
 
 powerspy.scala is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

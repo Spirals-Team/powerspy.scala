@@ -1,13 +1,9 @@
 language: scala
 scala:
-- 2.11.4
+- 2.11.6
 script:
-- sbt clean coverage test
-before_install:
-- openssl aes-256-cbc -K $encrypted_d2efbcffd312_key -iv $encrypted_d2efbcffd312_iv
-  -in secrets.tar.enc -out secrets.tar -d
-- tar xvf secrets.tar
+- sbt clean "project powerspy-core" coverage test
 after_success:
-- sbt coverageReport
-- sbt coverageAggregate
-- sbt codacyCoverage
+- sbt "project powerspy-core" coverageReport
+- sbt "project powerspy-core" codacyCoverage
+- sbt "project powerspy-core" coveralls

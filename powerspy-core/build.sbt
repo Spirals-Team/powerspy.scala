@@ -1,20 +1,8 @@
 name := "powerspy-core"
 
-// Logging
-libraryDependencies ++= Seq(
-  "org.apache.logging.log4j" % "log4j-api" % "2.1",
-  "org.apache.logging.log4j" % "log4j-core" % "2.1"
-)
-
 // Bluecove (for compilation purpose)
 libraryDependencies ++= Seq(
   "net.sf.bluecove" % "bluecove" % "2.1.0" % "provided"
-)
-
-// Tests
-libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.2.2" % "test",
-  "org.scalamock" %% "scalamock-scalatest-support" % "3.2" % "test"
 )
 
 startYear := Some(2014)
@@ -33,7 +21,7 @@ pomExtra := {
     <developer>
       <id>mcolmant</id>
       <name>Maxime Colmant</name>
-      <url>http://researchers.lille.inria.fr/colmant/</url>
+      <url>http://mcolmant.github.io/</url>
     </developer>
   </developers>
 }

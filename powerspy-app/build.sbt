@@ -1,11 +1,5 @@
 name := "powerspy-app"
 
-// Logging
-libraryDependencies ++= Seq(
-  "org.apache.logging.log4j" % "log4j-api" % "2.1",
-  "org.apache.logging.log4j" % "log4j-core" % "2.1"
-)
-
 // CLI
 libraryDependencies ++= Seq(
   "org.rogach" %% "scallop" % "0.9.5"
