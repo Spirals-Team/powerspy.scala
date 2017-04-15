@@ -1,9 +1,8 @@
 language: scala
 scala:
-- 2.11.6
+- 2.12.1
 script:
-- sbt clean "project powerspy-core" coverage test
+- sbt clean compile "project core" coverage test
 after_success:
-- sbt "project powerspy-core" coverageReport
-- sbt "project powerspy-core" codacyCoverage
-- sbt "project powerspy-core" coveralls
+- sbt "project core" coverageReport
+- sbt "project core" coveralls

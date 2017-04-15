@@ -5,6 +5,11 @@ libraryDependencies ++= Seq(
   "net.sf.bluecove" % "bluecove" % "2.1.0" % "provided"
 )
 
+// Testing
+libraryDependencies ++= Seq(
+  "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % "test"
+)
+
 startYear := Some(2014)
 
 homepage := Some(url("https://github.com/Spirals-Team/powerspy.scala"))
@@ -36,16 +41,4 @@ publishTo := {
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-}
-
-val downloadBluecoveLibs = TaskKey[Seq[File]]("download-bluecove")
-
-downloadBluecoveLibs := {
-  val locationBluecove = baseDirectory.value / "lib" / "bluecove-2.1.0.jar"
-  val locationBluecoveGpl = baseDirectory.value / "lib" / "bluecove-gpl-2.1.0.jar"
-  if(!locationBluecove.getParentFile.exists()) locationBluecove.getParentFile.mkdirs()
-  if(!locationBluecoveGpl.getParentFile.exists()) locationBluecoveGpl.getParentFile.mkdirs()
-  if(!locationBluecove.exists()) IO.download(url("https://bluecove.googlecode.com/files/bluecove-2.1.0.jar"), locationBluecove)
-  if(!locationBluecoveGpl.exists()) IO.download(url("https://bluecove.googlecode.com/files/bluecove-gpl-2.1.0.jar"), locationBluecoveGpl)
-  Seq(locationBluecove, locationBluecoveGpl)
 }

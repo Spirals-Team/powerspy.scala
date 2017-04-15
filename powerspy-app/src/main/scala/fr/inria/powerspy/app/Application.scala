@@ -46,6 +46,8 @@ class Configuration(arguments: Seq[String]) extends ScallopConf(arguments) {
     case MacAdress(_*) => true
     case _ => false
   })
+
+  verify()
 }
 
 /**
