@@ -1,8 +1,14 @@
 language: scala
+
 scala:
-- 2.12.1
+  - 2.12.1
+jdk:
+  - oraclejdk8
+# workaround for openjdk buffer overflow
+addons:
+  hostname: localhost
 script:
-- sbt clean compile "project core" coverage test
+  - sbt clean compile "project core" coverage test
 after_success:
-- sbt "project core" coverageReport
-- sbt "project core" coveralls
+  - sbt "project core" coverageReport
+  - sbt "project core" coveralls
