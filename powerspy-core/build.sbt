@@ -1,8 +1,8 @@
 name := "powerspy-core"
 
-// Bluecove (for compilation purpose)
 libraryDependencies ++= Seq(
-  "net.sf.bluecove" % "bluecove" % "2.1.0" % "provided"
+  "net.sf.bluecove" % "bluecove" % "2.1.0",
+  "net.sf.bluecove" % "bluecove-gpl" % "2.1.0"
 )
 
 // Testing
