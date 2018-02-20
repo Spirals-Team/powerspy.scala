@@ -22,8 +22,8 @@ When submitting code, please make every effort to follow existing conventions an
 
 # Acknowledgments
 We all stand on the shoulders of giants and get by with a little help from our friends.
-powerspy.scala is written in [Scala](http://www.scala-lang.org) (version 2.12.1 under [3-clause BSD license](http://www.scala-lang.org/license.html)) and built on top of:
-* [Apache log4j2](http://logging.apache.org/log4j/2.x/) (version 2.3 under [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0)), for logging.
+powerspy.scala is written in [Scala](http://www.scala-lang.org) (version 2.12.4 under [3-clause BSD license](http://www.scala-lang.org/license.html)) and built on top of:
+* [Apache log4j2](http://logging.apache.org/log4j/2.x/) (version 2.10.0 under [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0)), for logging.
 
 # Licence
 This software is licensed under the *GNU Affero General Public License*, quoted below.
