@@ -62,7 +62,7 @@ object Application extends App {
   @volatile var powerspy: Option[PowerSpy] = None
 
   val shutdownHookThread = scala.sys.ShutdownHookThread {
-    println("It's the time for sleeping! ...")
+    println("Shutting down collect of PowerSpy power measurements...")
 
     powerspy match {
       case Some(pSpy) => {

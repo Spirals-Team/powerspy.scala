@@ -404,7 +404,7 @@ class PowerSpy(val connexion: Connexion, timeout: FiniteDuration) {
             val pVoltage = uscaleCurrent * new Hexadecimal(values(3), Encoding.BIG_ENDIAN).bits
             val pCurrent = iscaleCurrent * new Hexadecimal(values(4), Encoding.BIG_ENDIAN).bits
 
-            log.debug("voltage: {}, current: {}, power: {}, pvoltage: {}, pcurrent: {}", voltage.toString, current.toString, power.toString, pVoltage.toString, pCurrent.toString)
+            log.debug("voltage: {}, current: {}, power: {}, pvoltage: {}, pcurrent: {}", voltage.toString, current.toString, power.toString, pVoltage.toString, pCurrent.toString: Any)
             Some(PSpyRTValues(System.currentTimeMillis(), voltage, current, power, pVoltage, pCurrent))
           }
           else {
@@ -500,8 +500,8 @@ object PowerSpy {
         val iScaleCurrent = pSpy.iscaleCurrent().getOrElse(-1)
         val pScaleCurrent = pSpy.pscaleCurrent().getOrElse(-1)
 
-        log.debug("uscaleFactory: {}, iscaleFactory: {}, pscaleFactory: {}", uScaleFactory.toString, iScaleFactory.toString, pScaleFactory.toString)
-        log.debug("uscaleCurrent: {}, iscaleCurrent: {}, pscaleCurrent: {}", uScaleCurrent.toString, iScaleCurrent.toString, pScaleCurrent.toString)
+        log.debug("uscaleFactory: {}, iscaleFactory: {}, pscaleFactory: {}", uScaleFactory.toString, iScaleFactory.toString, pScaleFactory.toString: Any)
+        log.debug("uscaleCurrent: {}, iscaleCurrent: {}, pscaleCurrent: {}", uScaleCurrent.toString, iScaleCurrent.toString, pScaleCurrent.toString: Any)
 
         connexionWrapper = Some(connexion)
         powerspy = Some(pSpy)
